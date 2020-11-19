@@ -4,6 +4,7 @@ import sqlite3
 import numpy as np
 import cv2
 import sys
+from PIL import Image
 
 
 def create_db_connection(db_name = "name"):
@@ -92,6 +93,14 @@ for i, photo in enumerate(photos['photos']['photo']):
     np_image = cv2.imread("sample_image.jpg")
     red_per = compute_red_percentage(np_image)
     insert_photo_into_photos_table(conn, response.content, red_per)
+    break
 
 res = find_most_red(conn)
+file = open("sample_image.jpg", "wb")
+file.write(res[1])
+file.close()
+np_image = cv2.imread("sample_image.jpg")
+img = Image.fromarray(np_image, 'RGB')
+img.show()
+
 conn.close()
